@@ -52,14 +52,20 @@ export default function GroupDetail(props) {
 
 export async function getServerSideProps(context) {
   const { idx } = context.params;
-  const res = await fetch(`http://45.154.24.65:5430/group/${encodeURI(idx)}`);
-  const data = await res.json();
-  if (!data) {
+  try{
+    const res = await fetch(`http://45.154.24.65:5430/group/${encodeURI(idx)}`);
+    const data = await res.json();
+    if (!data) {
+      return {
+        notFound: true,
+      };
+    }
     return {
-      notFound: true,
+      props: { data: data, groupID: idx },
     };
+  }catch(e){
+    console.error(e)
   }
-  return {
-    props: { data: data, groupID: idx },
-  };
+
+  
 }
