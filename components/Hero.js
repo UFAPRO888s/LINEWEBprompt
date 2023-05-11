@@ -6,7 +6,7 @@ export default function Hero({UserID,numGroup}) {
         <Image
           className="h-full w-full object-cover"
           src="/img/แมวลาย.webp"
-          alt="BOT LINE"
+          alt="BOT CAT LINE"
           width={100}
           height={100}
         />

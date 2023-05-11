@@ -7,7 +7,7 @@ export default function HeroInGroup({ GroupID, GroupData }) {
         <Image
           className="h-full w-full object-cover rounded-md"
           src="/img/แมวลาย.webp"
-          alt="BOT LINE"
+          alt="BOT SELF LINE"
           width={100}
           height={100}
         />
@@ -30,7 +30,6 @@ export default function HeroInGroup({ GroupID, GroupData }) {
               <br />
               มีสมาชิกจำนวน{" "}
               <span className="text-2xl font-bold">{GroupID.length}</span> ID
-              
             </p>
           </div>
           <div>

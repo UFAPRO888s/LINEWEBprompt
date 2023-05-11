@@ -1,30 +1,55 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export default function TableUsers({ UserXdata, GroupData }) {
-  const [LineKickGroupOnce, setLineKickGroupOnce] = useState("");
+  // const router = useRouter();
+  // const { asPath } = useRouter();
+  // console.log(asPath);
+  const [SuccessKickGroupOnce, setSuccessKickGroupOnce] = useState();
+  //const [Successchecked, setSuccessChecked] = useState([]);
+  const [checked, setChecked] = useState([]);
+  //console.log(GroupData.id)
+  const handleCheck = (event) => {
+    var updatedList = [...checked];
+    if (event.target.checked) {
+      //console.log("checked",event.target.value)
+      updatedList = [...checked, event.target.value];
+    } else {
+      //console.log("unchecked",event.target.value)
+      updatedList.splice(checked.indexOf(event.target.value), 1);
+    }
+    setChecked(updatedList);
+  };
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await fetch("http://45.154.24.65:5430/groupkonce/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+  // useEffect(() => {
+  //   return () => {};
+  // }, []);
 
-        const result = await response.json();
-        console.log("Success:", result);
-      } catch (error) {
-        console.error("Error:", error);
+  const kickOnceUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:5430/groupkonce", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gid: GroupData.id, ck: checked }),
+      });
+
+      const result = await response.json();
+      if (result) {
+        setSuccessKickGroupOnce(result.ck);
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    getUsers();
-
-    return () => {};
-  }, []);
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20">
       <div className="sm:flex sm:items-center">
@@ -35,13 +60,24 @@ export default function TableUsers({ UserXdata, GroupData }) {
             กลัวส้นตีนเจ้าของห้องจะดีกว่า
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-          >
-            KICK ALL
-          </button>
+        <div className="flex gap-2">
+          <div className="flex-none">
+            <button
+              type="button"
+              onClick={kickOnceUsers}
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-none focus:ring-indigo-500 focus:ring-offset-none sm:w-auto"
+            >
+              KICK FIRST
+            </button>
+          </div>
+          <div className="flex-none">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+            >
+              KICK ALL
+            </button>
+          </div>
         </div>
       </div>
       <div className="mt-8 flex flex-col">
@@ -84,103 +120,112 @@ export default function TableUsers({ UserXdata, GroupData }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {UserXdata.membersIDX?.map((person, indexmember) => (
-                    <tr key={indexmember}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0">
-                            {person.picturePath ? (
-                              <Image
-                                className="h-10 w-10 rounded-full"
-                                src={
-                                  "https://obs.line-scdn.net/" +
-                                  person.picturePath +
-                                  ".png"
-                                }
-                                alt={person.displayDataUser.replace(
-                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                  {UserXdata.membersIDX?.map((person, indexmember) => {
+                    const resCheck = SuccessKickGroupOnce?.filter((memXber) =>
+                      memXber.includes(person.userid)
+                    );
+                    
+                    return (
+                      <tr key={indexmember}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div className="flex items-center">
+                            <div className="h-10 w-10 flex-shrink-0">
+                              {person.picturePath ? (
+                                <img
+                                  className="h-10 w-10 rounded-full"
+                                  src={
+                                    "https://obs.line-scdn.net/" +
+                                    person.picturePath +
+                                    ".png"
+                                  }
+                                  alt={person.displayDataUser.replace(
+                                    /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                    ""
+                                  )}
+                                />
+                              ) : (
+                                <img
+                                  className="h-10 w-10 rounded-full"
+                                  src={"/LOGO.png"}
+                                  alt={person.displayDataUser.replace(
+                                    /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                    ""
+                                  )}
+                                />
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <div className="font-medium text-gray-900">
+                                {person.displayDataUser.replace(
+                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
                                   ""
                                 )}
-                                width={100}
-                                height={100}
-                              />
-                            ) : (
-                              <Image
-                                className="h-10 w-10 rounded-full"
-                                src={"/LOGO.png"}
-                                alt={person.displayDataUser.replace(
-                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
-                                  ""
-                                )}
-                                width={100}
-                                height={100}
+                              </div>
+                              <div className="text-gray-500 line-clamp-1">
+                                {person.statusMessage
+                                  .slice(0, 20)
+                                  .replace(
+                                    /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                    ""
+                                  )}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <div className="text-gray-900">{person.userid}</div>
+                          <div className="text-gray-500">
+                            {new Date(person.createdTime).toLocaleString(
+                              "th-TH",
+                              { timeZone: "Asia/Bangkok" }
+                            )}
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                            พร้อมออกจากห้อง
+                          </span>
+                        </td>
+                        <td className="flex gap-4 items-center whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {GroupData.groupExtracreator == person.userid ? (
+                            <Image
+                              className="h-8 w-8 rounded-full p-1"
+                              src={"/img/head.png"}
+                              alt="headgroup"
+                              width={100}
+                              height={100}
+                            />
+                          ) : null}
+                          <div className="ml-3 flex h-5 items-center">
+                            {!resCheck?.[0] && (
+                              <input
+                                id={`person-${person.userid}`}
+                                name={`person-${person.userid}`}
+                                type="checkbox"
+                                value={person.userid}
+                                onChange={handleCheck}
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                               />
                             )}
                           </div>
-                          <div className="ml-4">
-                            <div className="font-medium text-gray-900">
-                              {person.displayDataUser.replace(
-                                /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
-                                ""
-                              )}
-                            </div>
-                            <div className="text-gray-500 line-clamp-1">
-                              {person.statusMessage
-                                .slice(0, 20)
-                                .replace(
-                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
-                                  ""
-                                )}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="text-gray-900">{person.userid}</div>
-                        <div className="text-gray-500">
-                          {new Date(person.createdTime).toLocaleString(
-                            "th-TH",
-                            { timeZone: "Asia/Bangkok" }
+                        </td>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          {!resCheck?.[0] && (
+                            <Link
+                              href="#"
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              KICK
+                              <span className="sr-only">
+                                {" "}
+                                {person.displayDataUser}
+                              </span>
+                            </Link>
                           )}
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                          พร้อมออกจากห้อง
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {GroupData.groupExtracreator == person.userid ? (
-                          <Image
-                            className="h-8 w-8 rounded-full p-1"
-                            src={"/img/head.png"}
-                            alt={"head"}
-                            width={100}
-                            height={100}
-                          />
-                        ) : null}
-                        <div className="ml-3 flex h-5 items-center">
-                          <input
-                            id={`person-${person.userid}`}
-                            name={`person-${person.userid}`}
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                        </div>
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          KICK
-                          <span className="sr-only">
-                            , {person.displayDataUser}
-                          </span>
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

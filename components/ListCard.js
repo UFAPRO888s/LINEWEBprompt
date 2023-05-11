@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 export default function ListCard({ Data }) {
-  const [NumGroup, setNumGroup] = useState("");
+  //const [NumGroup, setNumGroup] = useState("");
 
   return (
     <div>
@@ -51,25 +51,14 @@ export default function ListCard({ Data }) {
                     </p>
                   </div>
                   {Data[key].picturePath ? (
-                    <Image
-                      className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-                      src={
-                        "https://obs.line-scdn.net/" +
-                        Data[key].picturePath +
-                        ".png"
-                      }
-                      alt={Data[key].name}
-                      width={100}
-                      height={100}
-                    />
+                    <img className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" src={
+                      "https://obs.line-scdn.net/" +
+                      Data[key].picturePath +
+                      ".png"
+                    }
+                    alt={Data[key].name} />
                   ) : (
-                    <Image
-                      className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-                      src={"/LOGO.png"}
-                      alt={"LOGO LINE X"}
-                      width={100}
-                      height={100}
-                    />
+                    <img className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" src={"/LOGO.png"} alt="LOGO LINE X" />
                   )}
                 </div>
                 <div>
@@ -92,7 +81,6 @@ export default function ListCard({ Data }) {
                       <span className="flex gap-1 items-center ml-3 text-md font-bold">
                         {Object.keys(Data[key].memberMids).length}{" "}
                         <p className="ml-2 text-xs text-start font-bold text-gray-500">
-                          {" "}
                           ID
                         </p>
                       </span>
