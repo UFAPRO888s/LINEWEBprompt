@@ -1,6 +1,30 @@
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 export default function TableUsers({ UserXdata, GroupData }) {
- 
+  const [LineKickGroupOnce, setLineKickGroupOnce] = useState("");
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await fetch("http://45.154.24.65:5430/groupkonce/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("Success:", result);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    getUsers();
+
+    return () => {};
+  }, []);
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20">
       <div className="sm:flex sm:items-center">
@@ -73,7 +97,10 @@ export default function TableUsers({ UserXdata, GroupData }) {
                                   person.picturePath +
                                   ".png"
                                 }
-                                alt={person.displayDataUser.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')}
+                                alt={person.displayDataUser.replace(
+                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                  ""
+                                )}
                                 width={100}
                                 height={100}
                               />
@@ -81,7 +108,10 @@ export default function TableUsers({ UserXdata, GroupData }) {
                               <Image
                                 className="h-10 w-10 rounded-full"
                                 src={"/LOGO.png"}
-                                alt={person.displayDataUser.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')}
+                                alt={person.displayDataUser.replace(
+                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                  ""
+                                )}
                                 width={100}
                                 height={100}
                               />
@@ -89,10 +119,18 @@ export default function TableUsers({ UserXdata, GroupData }) {
                           </div>
                           <div className="ml-4">
                             <div className="font-medium text-gray-900">
-                              {person.displayDataUser.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')}
+                              {person.displayDataUser.replace(
+                                /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
+                                ""
+                              )}
                             </div>
                             <div className="text-gray-500 line-clamp-1">
-                              {person.statusMessage.slice(0, 20).replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')}
+                              {person.statusMessage
+                                .slice(0, 20)
+                                .replace(
+                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                  ""
+                                )}
                             </div>
                           </div>
                         </div>
@@ -122,13 +160,13 @@ export default function TableUsers({ UserXdata, GroupData }) {
                           />
                         ) : null}
                         <div className="ml-3 flex h-5 items-center">
-                        <input
-                          id={`person-${person.userid}`}
-                          name={`person-${person.userid}`}
-                          type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                      </div>
+                          <input
+                            id={`person-${person.userid}`}
+                            name={`person-${person.userid}`}
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                        </div>
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <a
