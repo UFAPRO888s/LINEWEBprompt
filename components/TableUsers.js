@@ -201,7 +201,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
                                   height={100}
                                   className="absolute h-10 w-10 -left-4 -top-3 "
                                 />
-                              ) : (<p className="text-gray-400 text-xs">{person.typeUser}</p>)}
+                              ) : (<p className="absolute h-10 w-auto -left-4 -top-3 text-gray-400 text-xs">{person.typeUser}</p>)}
                               <div className="ml-4">
                                 <div className="font-medium text-gray-900">
                                   {person.displayDataUser.replace(
