@@ -8,20 +8,16 @@ function classNames(...classes) {
 }
 
 export default function TableUsers({ UserXdata, GroupData }) {
-  // const router = useRouter();
-  // const { asPath } = useRouter();
-  // console.log(asPath);
+  const router = useRouter();
   const [SuccessKickGroupOnce, setSuccessKickGroupOnce] = useState();
-  //const [Successchecked, setSuccessChecked] = useState([]);
+  // const [SuccessKickGroupUser, setSuccessKickGroupUser] = useState();
+
   const [checked, setChecked] = useState([]);
-  //console.log(GroupData.id)
   const handleCheck = (event) => {
     var updatedList = [...checked];
     if (event.target.checked) {
-      //console.log("checked",event.target.value)
       updatedList = [...checked, event.target.value];
     } else {
-      //console.log("unchecked",event.target.value)
       updatedList.splice(checked.indexOf(event.target.value), 1);
     }
     setChecked(updatedList);
@@ -33,7 +29,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
 
   const kickOnceUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5430/groupkonce", {
+      const response = await fetch("http://45.154.24.65:5430/groupkonce", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +46,47 @@ export default function TableUsers({ UserXdata, GroupData }) {
     }
   };
 
+  const kickGroupKUser = async (userid) => {
+    try {
+      const response = await fetch("http://45.154.24.65:5430/groupkuser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gid: GroupData.id, uid: userid }),
+      });
+
+      const result = await response.json();
+      if (result) {
+        setSuccessKickGroupOnce([result.uid]);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
+  const kickGroupKAll = async () => {
+    try {
+      const response = await fetch("http://45.154.24.65:5430/groupkall", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gid: GroupData.id }),
+      });
+
+      const result = await response.json();
+      if (result) {
+        router.push("/");
+       // setSuccessKickGroupOnce();
+
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  //console.log(UserXdata);
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20">
       <div className="sm:flex sm:items-center">
@@ -73,6 +110,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
           <div className="flex-none">
             <button
               type="button"
+              onClick={kickGroupKAll}
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
             >
               KICK ALL
@@ -124,7 +162,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
                     const resCheck = SuccessKickGroupOnce?.filter((memXber) =>
                       memXber.includes(person.userid)
                     );
-                    
+
                     return (
                       <tr key={indexmember}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
@@ -154,37 +192,54 @@ export default function TableUsers({ UserXdata, GroupData }) {
                                 />
                               )}
                             </div>
-                            <div className="ml-4">
-                              <div className="font-medium text-gray-900">
-                                {person.displayDataUser.replace(
-                                  /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
-                                  ""
-                                )}
-                              </div>
-                              <div className="text-gray-500 line-clamp-1">
-                                {person.statusMessage
-                                  .slice(0, 20)
-                                  .replace(
-                                    /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                            <div className="flex relative ">
+                              {person.typeUser == "PROMOTION_BOT" ? (
+                                <Image
+                                  src={"/img/bot.png"}
+                                  alt="bot"
+                                  width={100}
+                                  height={100}
+                                  className="absolute h-10 w-10 -left-4 -top-3 "
+                                />
+                              ) : null}
+                              <div className="ml-4">
+                                <div className="font-medium text-gray-900">
+                                  {person.displayDataUser.replace(
+                                    /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
                                     ""
                                   )}
+                                </div>
+                                <div className="text-gray-500 text-xs">
+                                  {person.statusMessage
+                                    .slice(0, 20)
+                                    .replace(
+                                      /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                                      ""
+                                    )}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <div className="text-gray-900">{person.userid}</div>
-                          <div className="text-gray-500">
+                          <div className="text-gray-500 text-xs">
+                            สร้างเมื่อ{" "}
                             {new Date(person.createdTime).toLocaleString(
-                              "th-TH",
-                              { timeZone: "Asia/Bangkok" }
+                              "th-TH"
                             )}
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                            พร้อมออกจากห้อง
-                          </span>
+                          {!resCheck?.[0] ? (
+                            <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                              พร้อมออกจากห้อง
+                            </span>
+                          ) : (
+                            <span className="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
+                              ออกจากห้องไปแล้ว
+                            </span>
+                          )}
                         </td>
                         <td className="flex gap-4 items-center whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {GroupData.groupExtracreator == person.userid ? (
@@ -211,16 +266,16 @@ export default function TableUsers({ UserXdata, GroupData }) {
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           {!resCheck?.[0] && (
-                            <Link
-                              href="#"
-                              className="text-indigo-600 hover:text-indigo-900"
+                            <button
+                              onClick={() => kickGroupKUser(person.userid)}
+                              //onClick={(event) => kickGroupkuser('hello')}
+                              className="inline-flex items-center justify-center rounded-md border border-transparent bg-orange-200 px-4 py-2 text-sm font-bold text-gray-800 shadow-sm hover:bg-red-500 focus:outline-none focus:ring-none focus:ring-indigo-500 focus:ring-offset-none sm:w-auto"
                             >
                               KICK
                               <span className="sr-only">
-                                {" "}
                                 {person.displayDataUser}
                               </span>
-                            </Link>
+                            </button>
                           )}
                         </td>
                       </tr>
