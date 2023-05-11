@@ -29,12 +29,12 @@ export default function NavBar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    <a
+                    <Link
                       href="/manual"
                       className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                     >
                       คู่มือการใช้งาน
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
