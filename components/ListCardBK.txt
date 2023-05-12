@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-//import Image from "next/image";
+import Image from "next/image";
 export default function ListCard({ Data }) {
   //const [NumGroup, setNumGroup] = useState("");
 
@@ -26,39 +26,38 @@ export default function ListCard({ Data }) {
         role="list"
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
-        {Data["groupData"].map((DDGroup, key) => (
+        {Object.keys(Data).map((key) => (
           <div key={key}>
-            <Link href={"/group/" + DDGroup.id}>
+            <Link href={"/group/" + Data[key].id}>
               <li className="col-span-1 rounded-lg border-2 border-green-600 bg-white shadow hover:bg-green-100">
                 <div className="flex w-full items-center justify-between space-x-6 p-6">
                   <div className="flex-1 truncate">
                     <div className="flex items-center space-x-3">
                       <h3 className="truncate text-sm font-medium text-gray-900">
-                        {DDGroup.name}
+                        {Data[key].name}
                       </h3>
-                      {DDGroup.type == "GROUP" ? (
+                      {Data[key].type == "GROUP" ? (
                         <span className="inline-block flex-shrink-0 rounded-full bg-red-300 px-2 py-0.5 text-xs font-medium text-gray-50">
-                          {DDGroup.type}
+                          {Data[key].type}
                         </span>
                       ) : (
                         <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                          {DDGroup.type}
+                          {Data[key].type}
                         </span>
                       )}
                     </div>
                     <p className="mt-1 truncate text-xs text-gray-500">
-                      {DDGroup.id}
+                      {Data[key].id}
                     </p>
                   </div>
-                  {DDGroup.picturePath ? (
-                    <img
-                      className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
+                  {Data[key].picturePath ? (
+                    <img className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
                       src={
                         "https://obs.line-scdn.net/" +
-                        DDGroup.picturePath +
+                        Data[key].picturePath +
                         ".png"
                       }
-                      alt={DDGroup.name}
+                      alt={Data[key].name}
                     />
                   ) : (
                     <img
@@ -86,7 +85,7 @@ export default function ListCard({ Data }) {
                         />
                       </svg>
                       <span className="text-md ml-3 flex items-center gap-1 font-bold">
-                        {DDGroup.memberMids}
+                        {Object.keys(Data[key].memberMids).length}{" "}
                         <p className="ml-2 text-start text-xs font-bold text-gray-500">
                           ID
                         </p>
@@ -107,9 +106,9 @@ export default function ListCard({ Data }) {
                           d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
                         />
                       </svg>
-                      {DDGroup.inviteeMids && DDGroup.inviteeMids ? (
+                      {Data[key].inviteeMids && Data[key].inviteeMids ? (
                         <span className="text-md ml-3 flex items-center gap-1 font-bold">
-                          {DDGroup.inviteeMids}
+                          {Object.keys(Data[key].inviteeMids)?.length}
                           <p className="ml-2 text-start text-xs font-bold text-gray-500">
                             {" "}
                             ID

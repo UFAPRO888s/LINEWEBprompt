@@ -13,13 +13,12 @@ import Hero from "@/components/Hero";
 import NavBar from "@/components/NavBar";
 import ListCard from "@/components/ListCard";
 
-export default function Home() {
+
+export default function Home(props) {
   const [LineIDUser, setLineIDUser] = useState("");
   const [LineListUser, setLineListUser] = useState("");
   const [LineGroupNum, setLineGroupNum] = useState("");
-
-  //const { isLoggedIn } = useLiff();
-
+ 
   //useEffect(() => {
   //  if (!isLoggedIn) return;
   //  router.replace("/create");
@@ -56,12 +55,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <Hero UserID={LineIDUser} numGroup={LineGroupNum} />
+      <Hero UserID={props.dataGroup.botID} NameBot={props.dataGroup.name} numGroup={props.dataGroup.numGroup} />
       <Container>
         <div className="py-8">
-          <ListCard Data={LineListUser} />
+          <ListCard Data={props.dataGroup} />
         </div>
       </Container>
     </>
   );
+}
+export async function getServerSideProps(context) {
+  const res = await fetch(`http://localhost:3000/api/groups/`);
+  const data = await res.json();
+  return {
+    props: {dataGroup:data}, // will be passed to the page component as props
+  };
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-export default function Hero({UserID,numGroup}) {
+export default function Hero({UserID,NameBot,numGroup}) {
   return (
     <div className="relative bg-indigo-800">
       <div className="absolute inset-0">
@@ -19,12 +19,13 @@ export default function Hero({UserID,numGroup}) {
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           LINE SELFBOT
         </h1>
-        <p className="mt-6 max-w-3xl text-md text-indigo-100">
+        <div className="mt-6 max-w-3xl text-md text-indigo-100">
           LINE ID
-          <br/><span className="text-lg font-bold uppercase break-all">{UserID}</span> 
-          <br/>มีจำนวน <span className="text-2xl font-bold">{numGroup}</span> ห้อง
-          <br/>ช่วยให้คุณใช้งาน LINE ได้มากกว่า
-        </p>
+          <p className="text-md font-bold uppercase break-all">{UserID}</p> 
+          <p className="text-lg font-bold uppercase break-all">{NameBot}</p>
+          <p className="text-lg font-bold uppercase break-all">มีจำนวน <span className="text-2xl font-bold">{numGroup}</span> ห้อง</p>
+          ช่วยให้คุณใช้งาน LINE ได้มากกว่า
+        </div>
       </div>
     </div>
   );
