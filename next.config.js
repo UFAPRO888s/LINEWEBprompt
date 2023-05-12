@@ -16,13 +16,13 @@ module.exports = {
     dirs: ["pages", "components", "lib", "scripts"],
   },
   images: {
-    domains: ["liff.line.me", "obs.line-scdn.net"],
+    domains: ["liff.line.me", "obs.line-scdn.net","profile.line-scdn.net"],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   env: {
-    LIFF_ID: "1660693801-g2GRRrr4",
-    LIFF_URL: "1660693801-g2GRRrr4",
+    LIFF_ID: "1661040653-4knqkL7j",
+    LIFF_URL: "1661040653-4knqkL7j",
   },
 };

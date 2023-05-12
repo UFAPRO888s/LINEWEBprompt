@@ -10,41 +10,41 @@ import TableUsers from "@/components/TableUsers";
 
 export default function GroupDetail(props) {
 
-  const [LineGroupData, setLineGroupData] = useState("");
- 
-  useEffect(() => {
-    const fetchData = async () => {
-      const LineListUser = ref(realDB);
-      onValue(
-        LineListUser,
-        (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            //  const childKey = childSnapshot.key;
-            const childData = childSnapshot.val();
+  //const [LineGroupData, setLineGroupData] = useState("");
+ //console.log(props.data)
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const LineListUser = ref(realDB);
+  //     onValue(
+  //       LineListUser,
+  //       (snapshot) => {
+  //         snapshot.forEach((childSnapshot) => {
+  //           //  const childKey = childSnapshot.key;
+  //           const childData = childSnapshot.val();
 
-            //  const filterchild = Object.keys(childData).filter((key) => key.includes(props.groupID))
-            setLineGroupData(childData[props.groupID]);
-          });
-        },
-        {
-          onlyOnce: true,
-        }
-      );
-    };
-    fetchData();
-    return () => {};
-  }, []);
+  //           //  const filterchild = Object.keys(childData).filter((key) => key.includes(props.groupID))
+  //           setLineGroupData(childData[props.groupID]);
+  //         });
+  //       },
+  //       {
+  //         onlyOnce: true,
+  //       }
+  //     );
+  //   };
+  //   fetchData();
+  //   return () => {};
+  // }, []);
 
 
   return (
     <>
       <Head>
-        <title>LINE BOT {LineGroupData.name}</title>
+        <title>LINE BOT {props.data.groupName}</title>
       </Head>
       <NavBar />
-      <HeroInGroup GroupID={props.data.membersIDX} GroupData={LineGroupData}/>
+      <HeroInGroup GroupID={props.data} GroupData={props.data}/>
       <Container>
-        <TableUsers UserXdata={props.data} GroupData={LineGroupData}/>
+        <TableUsers UserXdata={props.data} GroupData={props.data}/>
       </Container>
     </>
   );
@@ -52,8 +52,9 @@ export default function GroupDetail(props) {
 
 export async function getServerSideProps(context) {
   const { idx } = context.params;
+ // console.log(idx)
   try{
-    const res = await fetch(`http://45.154.24.65:5430/group/${encodeURI(idx)}`);
+    const res = await fetch(`http://localhost:3000/api/members/?idx=${encodeURI(idx)}`);
     const data = await res.json();
     if (!data) {
       return {

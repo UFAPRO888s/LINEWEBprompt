@@ -1,11 +1,11 @@
 import Image from "next/image";
 export default function HeroInGroup({ GroupID, GroupData }) {
- // console.log(GroupData);
+  //console.log(GroupData);
   return (
     <div className="relative bg-indigo-800">
       <div className="absolute inset-0">
         <Image
-          className="h-full w-full object-cover rounded-md"
+          className="h-full w-full rounded-md object-cover"
           src="/img/แมวลาย.webp"
           alt="BOT SELF LINE"
           width={100}
@@ -16,32 +16,34 @@ export default function HeroInGroup({ GroupID, GroupData }) {
           aria-hidden="true"
         />
       </div>
-      <div className="relative mx-auto max-w-7xl py-14 px-6 sm:py-22 lg:px-8">
+      <div className="sm:py-22 relative mx-auto max-w-7xl px-6 py-14 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           LINE GROUP
         </h1>
         <div className="flex gap-4">
           <div>
-            <p className="mt-6 max-w-3xl text-md text-indigo-100">
-              LINE กลุ่ม {GroupData.name}
-              <span className="text-lg font-bold uppercase break-all">
+            <p className="text-md mt-6 max-w-3xl text-indigo-100">
+              LINE กลุ่ม {GroupData.groupName}
+              <span className="break-all text-lg font-bold uppercase">
                 {GroupID.userid}
               </span>
               <br />
               มีสมาชิกจำนวน{" "}
-              <span className="text-2xl font-bold">{GroupID.length}</span> ID
+              <span className="text-2xl font-bold">{GroupData.membersNum}</span> ID
             </p>
           </div>
           <div>
-            <Image
-              className="h-full w-auto object-cover"
-              src={
-                "https://obs.line-scdn.net/" + GroupData.picturePath + ".png"
-              }
-              alt={GroupData.name}
-              width={100}
-              height={100}
-            />
+            {GroupData.picturePath && (
+              <Image
+                className="h-full w-auto object-cover"
+                src={
+                  "https://obs.line-scdn.net/" + GroupData.picturePath + ".png"
+                }
+                alt={GroupData.name}
+                width={100}
+                height={100}
+              />
+            )}
           </div>
         </div>
       </div>

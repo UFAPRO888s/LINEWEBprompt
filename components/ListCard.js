@@ -3,7 +3,7 @@ import Link from "next/link";
 //import Image from "next/image";
 export default function ListCard({ Data }) {
   //const [NumGroup, setNumGroup] = useState("");
-
+ // console.log(Data);
   return (
     <div>
       <div className="py-4">
@@ -28,7 +28,7 @@ export default function ListCard({ Data }) {
       >
         {Data["groupData"].map((DDGroup, key) => (
           <div key={key}>
-            <Link href={"/group/" + DDGroup.id}>
+            <Link href={"/group/" + DDGroup.id + "/?idx=" + DDGroup.id}>
               <li className="col-span-1 rounded-lg border-2 border-green-600 bg-white shadow hover:bg-green-100">
                 <div className="flex w-full items-center justify-between space-x-6 p-6">
                   <div className="flex-1 truncate">

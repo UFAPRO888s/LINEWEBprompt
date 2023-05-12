@@ -3,15 +3,22 @@ const { Client } = require("node-linejs");
 const bot = new Client();
 let jsonData = require("./json/token.json");
 
-export default (req, res) => {
-  const { idx } = req.params;
-  console.log(idx)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "1mb",
+    },
+  },
+};
+
+const inGroup = async (req, res) => {
+  const {idx} = req.query;
+ // console.log(idx)
   if (jsonData.accessToken) {
     bot.login(jsonData.accessToken);
-    bot.on("ready", async () => {
+    bot.once("ready", async () => {
       let group = bot.groups.cache.find((g) => g.id.match(idx));
       let member = await group.members.fetch();
-
       let memberData = await member.map((member) => {
         return {
           userid: member.user.id,
@@ -26,9 +33,12 @@ export default (req, res) => {
       });
 
       res?.status(200).json({
-        botX: "member in group as " + group.name,
+        groupName: group.name,
+        membersNum: memberData.length,
         membersIDX: memberData,
       });
     });
   }
 };
+
+export default inGroup;

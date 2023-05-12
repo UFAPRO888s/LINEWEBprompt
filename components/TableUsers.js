@@ -86,7 +86,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
     }
   };
 
-  //console.log(UserXdata);
+  //console.log(GroupData);
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20">
       <div className="sm:flex sm:items-center">
