@@ -65,7 +65,7 @@ export default function Home(props) {
   );
 }
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:3000/api/groups/`);
+  const res = await fetch(`http://localhost:6969/api/groups/`);
   const data = await res.json();
   return {
     props: {dataGroup:data}, // will be passed to the page component as props
