@@ -1,0 +1,41 @@
+{
+  "name": "node-linejs",
+  "version": "1.0.11",
+  "description": "LINE's selfbot libraries written in NodeJS.",
+  "main": "index.js",
+  "dependencies": {
+    "@discordjs/collection": "^0.1.6",
+    "curve25519-js": "0.0.4",
+    "line-notify-nodejs": "^1.0.1",
+    "nanoid": "^3.1.23",
+    "node-fetch": "^2.6.1",
+    "qrcode": "^1.4.4",
+    "thrift": "^0.14.2",
+    "ws": "^7.5.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "author": "Chelos",
+  "license": "CC-BY-NC-3.0",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanios/node-linejs.git"
+  },
+  "keywords": [
+    "line",
+    "linejs",
+    "linesdk",
+    "botsdk"
+  ],
+  "bugs": {
+    "url": "https://github.com/chanios/node-linejs/issues"
+  },
+  "homepage": "https://github.com/chanios/node-linejs#readme"
+}
