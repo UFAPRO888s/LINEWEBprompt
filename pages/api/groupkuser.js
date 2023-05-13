@@ -15,19 +15,19 @@ const UserKick = async (req, res) => {
   if (req.method === "POST") {
     let dataUserKick = req.body;
     if (jsonData.accessToken) {
-      await bot.login(jsonData.accessToken);
-      let group = bot.groups.cache.find((g) => g.id.match(dataUserKick.gid));
-      await group.members.fetch();
-
-      const resCheck = group.members.cache.filter((member) =>
-        dataUserKick.uid.includes(member.user.id)
-      );
-      let members = resCheck.map((member) => {
-        
-         return member.kick();
+      bot.login(jsonData.accessToken);
+      bot.once("ready", async () => {
+        let group = bot.groups.cache.find((g) => g.id.match(dataUserKick.gid));
+        await group.members.fetch();
+        const resCheck = group.members.cache.filter((member) =>
+          dataUserKick.uid.includes(member.user.id)
+        );
+        let members = resCheck.map((member) => {
+          return member.kick();
+        });
+        console.log(members);
+        res?.status(200).json(dataUserKick);
       });
-      console.log(members)
-      res?.status(200).json(dataUserKick);
     }
   } else {
     // Handle any other HTTP method

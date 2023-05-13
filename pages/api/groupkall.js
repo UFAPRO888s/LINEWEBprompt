@@ -11,27 +11,27 @@ export const config = {
   },
 };
 
-const TeamX = []
+const TeamX = [];
 
 const KickUall = async (req, res) => {
   if (req.method === "POST") {
-    
     let dataAllKick = req.body;
     if (jsonData.accessToken) {
-      await bot.login(jsonData.accessToken);
-      let group = bot.groups.cache.find((g) => g.id.match(dataAllKick.gid));
-      await group.members.fetch();
-      
-      const resCheck = group.members.cache.filter(
-        (member) => !TeamX.includes(member.user.id)
-      );
-      let members = resCheck.map((member) => {
-        
-       // return member.kick();
+      bot.login(jsonData.accessToken);
+      bot.once("ready", async () => {
+        let group = bot.groups.cache.find((g) => g.id.match(dataAllKick.gid));
+        await group.members.fetch();
+
+        const resCheck = group.members.cache.filter(
+          (member) => !TeamX.includes(member.user.id)
+        );
+        let members = resCheck.map((member) => {
+          // return member.kick();
+        });
+
+        //group.reject()
+        res?.status(200).json(resCheck);
       });
-      
-      //group.reject()
-      res?.status(200).json(resCheck);
     }
   } else {
     // Handle any other HTTP method

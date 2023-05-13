@@ -12,29 +12,32 @@ export const config = {
 };
 
 const KickFirstKickOnce = async (req, res) => {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     let dataFirstKick = req.body;
-    console.log(dataFirstKick)
+    console.log(dataFirstKick);
     if (jsonData.accessToken) {
-      await bot.login(jsonData.accessToken);
-      try {
-        let group = bot.groups.cache.find((g) => g.id.match(dataFirstKick.gid));
-        await group.members.fetch();
-        const resCheck = group.members.cache.filter((member) =>
-          dataFirstKick.ck.includes(member.user.id)
-        );
-        let members = resCheck.map((member) => {
-         // return member.kick();
-        });
-        res?.status(200).json(dataFirstKick);
-      } catch (e) {
-        console.log(e);
-      }
+      bot.login(jsonData.accessToken);
+      bot.once("ready", async () => {
+        try {
+          let group = bot.groups.cache.find((g) =>
+            g.id.match(dataFirstKick.gid)
+          );
+          await group.members.fetch();
+          const resCheck = group.members.cache.filter((member) =>
+            dataFirstKick.ck.includes(member.user.id)
+          );
+          let members = resCheck.map((member) => {
+            // return member.kick();
+          });
+          res?.status(200).json(dataFirstKick);
+        } catch (e) {
+          console.log(e);
+        }
+      });
     }
   } else {
     // Handle any other HTTP method
   }
-  
 };
 
 export default KickFirstKickOnce;

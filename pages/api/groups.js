@@ -4,7 +4,7 @@ const bot = new Client();
 let jsonData = require("./json/token.json");
 
 export default (req, res) => {
-  bot.on("ready", async () => {
+  bot.once("ready", async () => {
    // console.log(`logged as ${bot.user.displayName} ${bot.user.id}`);
     let groups = await bot.groups.fetch();
     let group = await groups.map((group) => {
