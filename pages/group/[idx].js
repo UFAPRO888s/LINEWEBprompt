@@ -9,32 +9,22 @@ import { ref, onValue, off } from "firebase/database";
 import TableUsers from "@/components/TableUsers";
 
 export default function GroupDetail(props) {
-
   //const [LineGroupData, setLineGroupData] = useState("");
- //console.log(props.data)
+  //console.log(props.data)
   // useEffect(() => {
   //   const fetchData = async () => {
-  //     const LineListUser = ref(realDB);
-  //     onValue(
-  //       LineListUser,
-  //       (snapshot) => {
-  //         snapshot.forEach((childSnapshot) => {
-  //           //  const childKey = childSnapshot.key;
-  //           const childData = childSnapshot.val();
-
-  //           //  const filterchild = Object.keys(childData).filter((key) => key.includes(props.groupID))
-  //           setLineGroupData(childData[props.groupID]);
-  //         });
-  //       },
-  //       {
-  //         onlyOnce: true,
-  //       }
+  //     const LineListUser = await fetch("http://localhost:3000/api/groups");
+  //     const childSnapshot = await LineListUser.json();
+  //     //const resultSnap = Object.keys(childSnapshot['groupData']).filter((key) => childSnapshot['groupData'][key].id.includes(props.GroupID))
+  //     //  const resultSnap = childSnapshot['groupData'].filter(ListG => ListG.id == props.GroupID);
+  //     const resultSnap = Object.keys(childSnapshot["groupData"]).filter(
+  //       (key) => childSnapshot["groupData"][key].id == props.GroupID
   //     );
+  //     console.log(resultSnap);
   //   };
   //   fetchData();
   //   return () => {};
   // }, []);
-
 
   return (
     <>
@@ -42,9 +32,9 @@ export default function GroupDetail(props) {
         <title>LINE BOT {props.data.groupName}</title>
       </Head>
       <NavBar />
-      <HeroInGroup GroupID={props.data} GroupData={props.data}/>
+      <HeroInGroup GroupData={props.data} />
       <Container>
-        <TableUsers UserXdata={props.data} GroupData={props.data}/>
+        <TableUsers GroupData={props.data} />
       </Container>
     </>
   );
@@ -52,10 +42,13 @@ export default function GroupDetail(props) {
 
 export async function getServerSideProps(context) {
   const { idx } = context.params;
- // console.log(idx)
-  try{
-    const res = await fetch(`http://localhost:3000/api/members/?idx=${encodeURI(idx)}`);
+  // console.log(idx)
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/members/?idx=${encodeURI(idx)}`
+    );
     const data = await res.json();
+
     if (!data) {
       return {
         notFound: true,
@@ -64,9 +57,7 @@ export async function getServerSideProps(context) {
     return {
       props: { data: data, groupID: idx },
     };
-  }catch(e){
-    console.error(e)
+  } catch (e) {
+    console.error(e);
   }
-
-  
 }

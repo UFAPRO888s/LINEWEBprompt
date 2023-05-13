@@ -3,7 +3,7 @@ import Link from "next/link";
 //import Image from "next/image";
 export default function ListCard({ Data }) {
   //const [NumGroup, setNumGroup] = useState("");
- // console.log(Data);
+  //console.log(Data);
   return (
     <div>
       <div className="py-4">

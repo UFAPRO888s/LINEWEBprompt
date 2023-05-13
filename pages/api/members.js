@@ -18,7 +18,15 @@ const inGroup = async (req, res) => {
     bot.login(jsonData.accessToken);
     bot.once("ready", async () => {
       let group = bot.groups.cache.find((g) => g.id.match(idx));
+      // let memberinvites = await group.invites.fetch();
+      // let invitesData = await memberinvites.map((invite) => {
+      // //let invitesData = Object.keys(group.invites).forEach(function(key, index) {
+      //   //console.log(invite.id)
+      //   return invite
+      // });
+     // console.log(group.name)
       let member = await group.members.fetch();
+      
       let memberData = await member.map((member) => {
         return {
           userid: member.user.id,
@@ -34,8 +42,10 @@ const inGroup = async (req, res) => {
 
       res?.status(200).json({
         groupName: group.name,
+        groupID: group.id,
         membersNum: memberData.length,
         membersIDX: memberData,
+        inviteData: group.extra.groupExtra.inviteeMids
       });
     });
   }

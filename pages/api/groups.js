@@ -17,6 +17,7 @@ export default (req, res) => {
         groupExtracreator: group.extra.groupExtra.creator,
         memberMids: Object.keys(group.extra.groupExtra.memberMids).length,
         inviteeMids: Object.keys(group.extra.groupExtra.inviteeMids).length,
+        inviteeID: group.extra.groupExtra.inviteeMids
       };
     });
     res

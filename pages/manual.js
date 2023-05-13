@@ -11,7 +11,7 @@ const Manual = () => {
         <div className="py-40">
           ไม่มีหรอก คู่มือ ขี้เกรียดทำ
           <Link href="/">Go Home</Link>
-          <Profile />
+          {/* <Profile /> */}
         </div>
       </Container>
     </>

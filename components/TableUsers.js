@@ -7,7 +7,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function TableUsers({ UserXdata, GroupData }) {
+export default function TableUsers({ GroupData }) {
   const router = useRouter();
   const [SuccessKickGroupOnce, setSuccessKickGroupOnce] = useState();
   // const [SuccessKickGroupUser, setSuccessKickGroupUser] = useState();
@@ -26,15 +26,35 @@ export default function TableUsers({ UserXdata, GroupData }) {
   // useEffect(() => {
   //   return () => {};
   // }, []);
-
-  const kickOnceUsers = async () => {
+ // console.log()
+  
+  const kickgroupreject = async () => {
     try {
-      const response = await fetch("http://45.154.24.65:5430/groupkonce", {
+      const response = await fetch("http://localhost:5430/groupreject", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ gid: GroupData.id, ck: checked }),
+        body: JSON.stringify({ gid: GroupData.groupID, ck: checked }),
+      });
+
+      const result = await response.json();
+      if (result) {
+        setSuccessKickGroupOnce(result.ck);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  const kickOnceUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:5430/kickfirst", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gid: GroupData.groupID, ck: checked }),
       });
 
       const result = await response.json();
@@ -48,15 +68,16 @@ export default function TableUsers({ UserXdata, GroupData }) {
 
   const kickGroupKUser = async (userid) => {
     try {
-      const response = await fetch("http://45.154.24.65:5430/groupkuser", {
+      const response = await fetch("http://localhost:5430/groupkuser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ gid: GroupData.id, uid: userid }),
+        body: JSON.stringify({ gid: GroupData.groupID, uid: userid }),
       });
 
       const result = await response.json();
+      console.log(result)
       if (result) {
         setSuccessKickGroupOnce([result.uid]);
       }
@@ -67,19 +88,19 @@ export default function TableUsers({ UserXdata, GroupData }) {
   
   const kickGroupKAll = async () => {
     try {
-      const response = await fetch("http://45.154.24.65:5430/groupkall", {
+      const response = await fetch("http://localhost:5430/groupkall", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ gid: GroupData.id }),
+        body: JSON.stringify({ gid: GroupData.groupID }),
       });
 
       const result = await response.json();
       if (result) {
-        router.push("/");
+        // router.push("/");
        // setSuccessKickGroupOnce();
-
+        console.log("result",result)
       }
     } catch (error) {
       console.error("Error:", error);
@@ -158,7 +179,7 @@ export default function TableUsers({ UserXdata, GroupData }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {UserXdata.membersIDX?.map((person, indexmember) => {
+                  {GroupData.membersIDX?.map((person, indexmember) => {
                     const resCheck = SuccessKickGroupOnce?.filter((memXber) =>
                       memXber.includes(person.userid)
                     );
