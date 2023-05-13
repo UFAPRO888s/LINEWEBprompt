@@ -8,7 +8,7 @@ export default function HeroInGroup({ GroupData }) {
 //console.log(GroupData)
   const kickgroupreject = async () => {
     try {
-      const response = await fetch("http://localhost:5430/groupreject", {
+      const response = await fetch("http://45.154.24.65:5430/groupreject", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

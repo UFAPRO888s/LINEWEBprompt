@@ -30,7 +30,7 @@ export default function TableUsers({ GroupData }) {
   
   const kickgroupreject = async () => {
     try {
-      const response = await fetch("http://localhost:5430/groupreject", {
+      const response = await fetch("http://45.154.24.65:5430/groupreject", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function TableUsers({ GroupData }) {
 
   const kickOnceUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5430/kickfirst", {
+      const response = await fetch("http://45.154.24.65:5430/kickfirst", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default function TableUsers({ GroupData }) {
 
   const kickGroupKUser = async (userid) => {
     try {
-      const response = await fetch("http://localhost:5430/groupkuser", {
+      const response = await fetch("http://45.154.24.65:5430/groupkuser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export default function TableUsers({ GroupData }) {
   
   const kickGroupKAll = async () => {
     try {
-      const response = await fetch("http://localhost:5430/groupkall", {
+      const response = await fetch("http://45.154.24.65:5430/groupkall", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

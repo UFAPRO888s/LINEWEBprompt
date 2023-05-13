@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "@/components/Container";
 import Link from "next/link";
-import Profile from "@/components/Profile";
+//import Profile from "@/components/Profile";
 const Manual = () => {
   
   return (
